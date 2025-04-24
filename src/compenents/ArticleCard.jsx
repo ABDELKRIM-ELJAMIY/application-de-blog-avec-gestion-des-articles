@@ -1,9 +1,10 @@
 import React from "react";
+import skyImage from '../assets/sky.jpg';
 
 const ArticleCard = () => {
     const article = {
         title: "React et Tailwind",
-        image:"ttt",
+        image: skyImage,
         category: "Développement",
         content: "Découvrez comment construire des interfaces modernes avec React et Tailwind CSS. Apprenez à créer des composants réutilisables et à styliser rapidement vos applications avec des classes utilitaires. Cette combinaison puissante permet aux développeurs de créer des interfaces utilisateur réactives et esthétiques sans quitter votre fichier JSX.",
         author: "Marie Dupont",
