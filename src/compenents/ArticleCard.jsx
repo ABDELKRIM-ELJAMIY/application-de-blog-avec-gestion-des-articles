@@ -13,33 +13,33 @@ const ArticleCard = () => {
     };
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-[#0D1B2A]">
-            <div className="w-full max-w-4xl rounded-lg shadow-xl overflow-hidden bg-[#0D1B2A]">
+        <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
+            <div className="rounded-lg shadow-lg overflow-hidden bg-[#0D1B2A]">
                 <div className="relative">
                     <img
                         src={article.image}
                         alt={article.title}
-                        className="w-full h-64 md:h-80 object-cover"
+                        className="w-full h-48 object-cover"
                     />
                     <div className="absolute top-4 left-4 px-4 py-2 rounded-full bg-[#415A77] text-[#E0E1DD] text-sm font-bold">
                         {article.category}
                     </div>
                 </div>
 
-                <div className="p-6 md:p-8 bg-[#1B263B]">
-                    <h2 className="text-2xl md:text-3xl font-bold text-[#E0E1DD] mb-4">{article.title}</h2>
+                <div className="p-4 bg-[#1B263B]">
+                    <h2 className="text-lg font-bold text-[#E0E1DD] mb-2">{article.title}</h2>
 
-                    <p className="text-[#778DA9] text-base md:text-lg leading-relaxed mb-6">
-                        {article.content}
+                    <p className="text-[#778DA9] text-sm leading-relaxed mb-4">
+                        {article.content.substring(0, 100)}...
                     </p>
 
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-4 border-t border-[#415A77]">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-2 border-t border-[#415A77]">
                         <div className="flex items-center mb-4 sm:mb-0">
-                            <div className="w-10 h-10 rounded-full bg-[#778DA9] flex items-center justify-center mr-3">
-                                <span className="text-[#0D1B2A] font-bold text-sm">MD</span>
+                            <div className="w-8 h-8 rounded-full bg-[#778DA9] flex items-center justify-center mr-2">
+                                <span className="text-[#0D1B2A] font-bold text-xs">MD</span>
                             </div>
                             <div>
-                                <p className="text-[#E0E1DD] text-sm font-medium">{article.author}</p>
+                                <p className="text-[#E0E1DD] text-xs font-medium">{article.author}</p>
                                 <p className="text-[#778DA9] text-xs">{article.date} • {article.readTime}</p>
                             </div>
                         </div>
