@@ -27,7 +27,7 @@ function App() {
           <Route path="/signup" element={<AuthForm />} />
           <Route path="/register" element={<AuthForm />} />
           <Route path="/comment" element={<CommentSection />} />
-          <Route path="/details/:id" element={<ArticleDetails />} />
+          <Route path="/articles/:id" element={<ArticleDetails />} />
 
         </Routes>
       </main>
