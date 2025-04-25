@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Image from "./images/BLOG.jpg"
+import Image from "./images/BLOG.jpg";
+import '../App.css'
 
 function AuthForm() {
   const [formData, setFormData] = useState({
@@ -106,12 +107,10 @@ function AuthForm() {
   };
 
   return (
-    <div
-    className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center px-4"
-     style={{ backgroundImage: `url(${Image})` }}
-      >
-      <div className="bg-white p-12 rounded-lg shadow-lg max-w-2xl w-full">
-        <h2 className="text-2xl text-black font-bold mb-6 text-center">Sign in</h2>
+    
+    <div className="min-h-screen bg-[rgb(13,27,42)] flex items-center justify-center px-4">
+      <div className="bg-[rgb(224,225,221)] p-12 rounded-lg shadow-lg w-full max-w-2xl">
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign in</h2>
 
         {successMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -133,7 +132,7 @@ function AuthForm() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.username ? 'border-red-500' : 'border-black'} rounded-lg text-black bg-white`}
+              className={`  w-full p-2 border ${errors.username ? 'border-red-500' : 'border-black'} rounded-lg text-black`}
               required
             />
             {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
@@ -146,7 +145,7 @@ function AuthForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.email ? 'border-red-500' : 'border-black'} rounded-lg text-black bg-white`}
+              className={`w-full p-2 border ${errors.email ? 'border-red-500' : 'border-black'} rounded-lg text-black `}
               required
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -159,7 +158,7 @@ function AuthForm() {
               name="number"
               value={formData.number}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.number ? 'border-red-500' : 'border-black'} rounded-lg text-black bg-white`}
+              className={`w-full p-2 border ${errors.number ? 'border-red-500' : 'border-black'} rounded-lg text-black`}
               required
             />
             {errors.number && <p className="text-red-500 text-sm mt-1">{errors.number}</p>}
@@ -172,7 +171,7 @@ function AuthForm() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.password ? 'border-red-500' : 'border-black'} rounded-lg text-black bg-white`}
+              className={` w-full p-2 border ${errors.password ? 'border-red-500' : 'border-black'} rounded-lg text-black`}
               required
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
@@ -185,7 +184,7 @@ function AuthForm() {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-black'} rounded-lg text-black bg-white`}
+              className={`w-full p-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-black'} rounded-lg text-black `}
               required
             />
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
