@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
+import Article from '../compenents/ArticleForm';
 
 const Home = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Toggle the modal visibility
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -14,7 +20,7 @@ const Home = () => {
                 const response = await axios.get('http://localhost:3000/articles');
                 setArticles(response.data);
             } catch (err) {
-                setError("Erreur lors du chargement des articles.");
+                setError('Erreur lors du chargement des articles.');
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -29,9 +35,10 @@ const Home = () => {
             <section className="bg-[#778DA9] text-white py-16">
                 <div className="text-center mb-8">
                     <button
-                        onClick={() => navigate('/ArticleForm')}
-                        className="bg-[#415A77] hover:bg-[#778DA9] text-white font-semibold py-2 px-4 rounded transition duration-300"
+                        onClick={toggleModal}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-[#1B263B] hover:bg-[#415A77] text-[#E0E1DD] font-semibold rounded-full shadow-md transition duration-300"
                     >
+                        <Plus size={20} />
                         Ajouter un article
                     </button>
                 </div>
@@ -53,8 +60,7 @@ const Home = () => {
                     ) : articles.length === 0 ? (
                         <p className="text-center text-[#1B263B]">Aucun article disponible.</p>
                     ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             {articles.map(article => (
                                 <div key={article.id} className="bg-[#0D1B2A] text-white rounded-lg overflow-hidden shadow-lg">
                                     <img
@@ -82,6 +88,20 @@ const Home = () => {
                     )}
                 </div>
             </section>
+
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-8 rounded-lg shadow-lg w-1/2">
+                        <Article /> 
+                        <button
+                            onClick={toggleModal}
+                            className="mt-4 text-[#1B263B] hover:text-[#415A77] font-semibold"
+                        >
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

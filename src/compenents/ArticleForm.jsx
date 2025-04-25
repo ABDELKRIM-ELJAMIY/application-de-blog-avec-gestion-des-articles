@@ -49,8 +49,8 @@ const Article = () => {
     });
 
     return (
-        <div className="min-h-screen bg-[#0D1B2A] text-[#E0E1DD] flex items-center justify-center p-6">
-            <div className="bg-[#1B263B] p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <div className="min-h-screen bg-[#2a160d00] text-[#E0E1DD] flex items-center justify-center p-6 bg-opacity-70">
+            <div className="bg-[#1B263B] p-8 rounded-lg shadow-lg w-3/4 sm:w-1/2 max-w-lg opacity-90">
                 <h1 className="text-3xl font-bold mb-6 text-center">Create New Article</h1>
 
                 <Formik

@@ -27,15 +27,16 @@ import Footer from './compenents/Footer'
 function ArticleDetails() {
   const location = useLocation()
 
-  const showNavbar = !['/login', '/signup'].includes(location.pathname)
+  // const showNavbar = !['/login', '/signup'].includes(location.pathname)
 
   return (
     <div>
-      {showNavbar && <Navbar />}
+      {/* {showNavbar && <Navbar />}*/}
+      <Navbar />
       <main className="flex-1 p-4">
         <Routes>
-          <Route path="/Accueil" element={<Home />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/login" element={<Login />} /> */}
           <Route path="/ArticleForm" element={<ArticleForm />} />
           <Route path="/ArticleCard" element={<ArticleCard />} />
           <Route path="/login" element={<Login />} />
