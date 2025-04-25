@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from './images/BLOG.jpg';
+import '../App.css'
 
 function Login () {
   const [formData, setFormData] = useState({
@@ -63,15 +64,11 @@ function Login () {
 
   return (
     <div
-      className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center px-4"
-      style={{
-        backgroundImage: `url(${Image})`,
-      }}
-    >
+      className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center bg-[rgb(13,27,42)] items-center px-4" >
       <h1 className="text-4xl md:text-5xl text-white font-bold mb-8  bg-opacity-40 px-6 py-4 rounded-lg">
         Welcome to your blog
       </h1>
-      <div className="bg-white bg-opacity-90 p-8 md:p-12 rounded-lg shadow-2xl max-w-md w-full backdrop-blur-sm">
+      <div className=" bg-[rgb(224,225,221)] p-8 md:p-12 rounded-lg shadow-2xl max-w-md w-full backdrop-blur-sm">
         <h2 className="text-2xl font-bold text-black mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
