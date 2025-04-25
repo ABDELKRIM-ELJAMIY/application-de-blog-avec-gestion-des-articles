@@ -7,11 +7,12 @@ const Home = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Toggle the modal visibility
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
+    const handleArticleAdded = (newArticle) => {
+        setArticles(prevArticles => [newArticle, ...prevArticles]);
+        const modal = document.getElementById('article-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
     };
 
     useEffect(() => {
@@ -28,6 +29,36 @@ const Home = () => {
         };
 
         fetchArticles();
+
+        const setupModal = () => {
+            const modalToggle = document.querySelector('[data-modal-toggle="article-modal"]');
+            modalToggle?.addEventListener('click', () => {
+                const modal = document.getElementById('article-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+
+            const closeButtons = document.querySelectorAll('[data-modal-hide="article-modal"]');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = document.getElementById('article-modal');
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                });
+            });
+        };
+
+        setTimeout(setupModal, 100);
+
+        return () => {
+            const modalToggle = document.querySelector('[data-modal-toggle="article-modal"]');
+            modalToggle?.removeEventListener('click', () => { });
+
+            const closeButtons = document.querySelectorAll('[data-modal-hide="article-modal"]');
+            closeButtons.forEach(button => {
+                button.removeEventListener('click', () => { });
+            });
+        };
     }, []);
 
     return (
@@ -35,7 +66,8 @@ const Home = () => {
             <section className="bg-[#778DA9] text-white py-16">
                 <div className="text-center mb-8">
                     <button
-                        onClick={toggleModal}
+                        data-modal-target="article-modal"
+                        data-modal-toggle="article-modal"
                         className="inline-flex items-center gap-2 px-6 py-3 bg-[#1B263B] hover:bg-[#415A77] text-[#E0E1DD] font-semibold rounded-full shadow-md transition duration-300"
                     >
                         <Plus size={20} />
@@ -89,19 +121,27 @@ const Home = () => {
                 </div>
             </section>
 
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-8 rounded-lg shadow-lg w-1/2">
-                        <Article /> 
-                        <button
-                            onClick={toggleModal}
-                            className="mt-4 text-[#1B263B] hover:text-[#415A77] font-semibold"
-                        >
-                            Fermer
-                        </button>
+            <div id="article-modal" data-modal-backdrop="static" tabIndex="-1" aria-hidden="true" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div className="relative p-4 w-full max-w-2xl max-h-full">
+                    <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                Create New Article
+                            </h3>
+                            <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="article-modal">
+                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                </svg>
+                                <span className="sr-only">Close modal</span>
+                            </button>
+                        </div>
+
+                        <div className="p-4 md:p-5">
+                            <Article onArticleAdded={handleArticleAdded} />
+                        </div>
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };
