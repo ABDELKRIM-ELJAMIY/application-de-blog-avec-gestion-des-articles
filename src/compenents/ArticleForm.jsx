@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const Article = () => {
     const [image, setImage] = useState(null);
-    const [category, setCategory] = useState('');
 
     const handleImageUpload = (e) => {
         const file = e.target.files?.[0];
@@ -17,17 +17,29 @@ const Article = () => {
         }
     };
 
-    const handleSubmit = (values) => {
-        console.log('Form Submitted:', values);
-        console.log('Image:', image);
-        console.log('Category:', category);
+    const handleSubmit = async (values, { resetForm }) => {
+        try {
+            const articleData = {
+                ...values,
+                image,
+            };
+
+            const response = await axios.post('http://localhost:3000/articles', articleData);
+            console.log('Article posted:', response.data);
+            alert('Article created successfully!');
+            resetForm();
+            setImage(null);
+        } catch (error) {
+            console.error('Error posting article:', error);
+            alert('Failed to post article.');
+        }
     };
 
     const validationSchema = Yup.object({
         title: Yup.string()
             .required('Title is required')
             .min(3, 'Title must be at least 3 characters')
-            .max(100, "title must be at most 100 "),
+            .max(100, "Title must be at most 100"),
         category: Yup.string()
             .required('Category is required')
             .min(2, 'Category must be at least 2 characters'),
@@ -50,44 +62,45 @@ const Article = () => {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({ values, handleChange, touched, errors }) => (
+                    {({ touched, errors, setFieldValue, values }) => (
                         <Form>
+                            {/* Title */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">Title</label>
                                 <Field
                                     type="text"
                                     name="title"
-                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.title && errors.title ? 'border-red-500' : 'border-[#778DA9]'
-                                        }`}
+                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.title && errors.title ? 'border-red-500' : 'border-[#778DA9]'}`}
                                 />
                                 <ErrorMessage name="title" component="div" className="text-red-400 text-sm mt-1" />
                             </div>
 
+                            {/* Category */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">Category</label>
-                                <Field
+                                <input
                                     type="text"
                                     name="category"
-                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.category && errors.category ? 'border-red-500' : 'border-[#778DA9]'
-                                        }`}
-                                    value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
+                                    value={values.category}
+                                    onChange={(e) => setFieldValue('category', e.target.value)}
+                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.category && errors.category ? 'border-red-500' : 'border-[#778DA9]'}`}
                                 />
                                 <ErrorMessage name="category" component="div" className="text-red-400 text-sm mt-1" />
                             </div>
 
+                            {/* Content */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">Content</label>
                                 <Field
                                     as="textarea"
                                     name="content"
                                     rows="4"
-                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.content && errors.content ? 'border-red-500' : 'border-[#778DA9]'
-                                        }`}
+                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.content && errors.content ? 'border-red-500' : 'border-[#778DA9]'}`}
                                 />
                                 <ErrorMessage name="content" component="div" className="text-red-400 text-sm mt-1" />
                             </div>
 
+                            {/* Image Upload */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">Upload Image</label>
                                 <input
