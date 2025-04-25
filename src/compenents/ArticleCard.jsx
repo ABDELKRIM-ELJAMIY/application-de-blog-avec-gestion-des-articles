@@ -1,49 +1,51 @@
 import React from "react";
-import skyImage from '../assets/sky.jpg';
 
-const ArticleCard = () => {
-    const article = {
-        title: "React et Tailwind",
-        image: skyImage,
-        category: "Développement",
-        content: "Découvrez comment construire des interfaces modernes avec React et Tailwind CSS. Apprenez à créer des composants réutilisables et à styliser rapidement vos applications avec des classes utilitaires. Cette combinaison puissante permet aux développeurs de créer des interfaces utilisateur réactives et esthétiques sans quitter votre fichier JSX.",
-        author: "Marie Dupont",
-        date: "24 Avril, 2025",
-        readTime: "5 min"
-    };
+const ArticleCard = ({ article }) => {
+    // Return null if article doesn't exist or doesn't have required properties
+    if (!article || !article.title || !article.image) {
+        return null;
+    }
+
+    // Safe access to properties
+    const authorInitial = article.author ? article.author.charAt(0) : "";
 
     return (
-        <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
-            <div className="rounded-lg shadow-lg overflow-hidden bg-[#0D1B2A]">
-                <div className="relative">
-                    <img
-                        src={article.image}
-                        alt={article.title}
-                        className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute top-4 left-4 px-4 py-2 rounded-full bg-[#415A77] text-[#E0E1DD] text-sm font-bold">
+        <div className="bg-[#E0E1DD] rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
+            <div className="relative">
+                <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-56 object-cover"
+                />
+                {article.category && (
+                    <span className="absolute top-3 right-3 bg-[#415A77] text-[#E0E1DD] text-xs font-semibold px-3 py-1 rounded-full">
                         {article.category}
-                    </div>
-                </div>
+                    </span>
+                )}
+            </div>
 
-                <div className="p-4 bg-[#1B263B]">
-                    <h2 className="text-lg font-bold text-[#E0E1DD] mb-2">{article.title}</h2>
-
-                    <p className="text-[#778DA9] text-sm leading-relaxed mb-4">
-                        {article.content.substring(0, 100)}...
+            <div className="p-5 bg-[#1B263B]">
+                <h2 className="text-xl font-bold text-[#E0E1DD] mb-3 line-clamp-2">{article.title}</h2>
+                {article.content && (
+                    <p className="text-[#778DA9] mb-4 line-clamp-3">
+                        {article.content.substring(0, 120)}...
                     </p>
+                )}
 
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-2 border-t border-[#415A77]">
-                        <div className="flex items-center mb-4 sm:mb-0">
-                            <div className="w-8 h-8 rounded-full bg-[#778DA9] flex items-center justify-center mr-2">
-                                <span className="text-[#0D1B2A] font-bold text-xs">MD</span>
+                <div className="pt-4 border-t border-[#415A77] flex items-center justify-between">
+                    {article.author && (
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 rounded-full bg-[#778DA9] flex items-center justify-center">
+                                <span className="text-[#0D1B2A] font-bold">{authorInitial}</span>
                             </div>
                             <div>
-                                <p className="text-[#E0E1DD] text-xs font-medium">{article.author}</p>
-                                <p className="text-[#778DA9] text-xs">{article.date} • {article.readTime}</p>
+                                <p className="font-medium text-sm text-[#E0E1DD]">{article.author}</p>
+                                <p className="text-[#778DA9] text-xs">
+                                    {article.createdRelative || "just now"} {article.readTime && `• ${article.readTime}`}
+                                </p>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
