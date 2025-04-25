@@ -7,8 +7,9 @@ import Login from './compenents/Login';
 import Home from './pages/Home';
 import Footer from './compenents/Footer';
 import CommentSection from './compenents/CommentSection';
+import ArticleDetails from './compenents/ArticleDetails';
 
-function ArticleDetails() {
+function App() {
   const location = useLocation();
 
   // Show the Navbar only on specific routes
@@ -26,6 +27,8 @@ function ArticleDetails() {
           <Route path="/signup" element={<AuthForm />} />
           <Route path="/register" element={<AuthForm />} />
           <Route path="/comment" element={<CommentSection />} />
+          <Route path="/details/:id" element={<ArticleDetails />} />
+
         </Routes>
       </main>
       <Footer />
@@ -33,4 +36,4 @@ function ArticleDetails() {
   );
 }
 
-export default ArticleDetails;
+export default App;
