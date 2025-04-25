@@ -3,7 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-const Article = () => {
+const Article = ({ onArticleAdded }) => {
     const [image, setImage] = useState(null);
 
     const handleImageUpload = (e) => {
@@ -26,7 +26,11 @@ const Article = () => {
 
             const response = await axios.post('http://localhost:3000/articles', articleData);
             console.log('Article posted:', response.data);
-            alert('Article created successfully!');
+
+            if (onArticleAdded) {
+                onArticleAdded(response.data);
+            }
+
             resetForm();
             setImage(null);
         } catch (error) {
@@ -49,85 +53,87 @@ const Article = () => {
     });
 
     return (
-        <div className="min-h-screen bg-[#0D1B2A] text-[#E0E1DD] flex items-center justify-center p-6">
-            <div className="bg-[#1B263B] p-8 rounded-lg shadow-lg w-full max-w-2xl">
-                <h1 className="text-3xl font-bold mb-6 text-center">Create New Article</h1>
+        <div className="w-full">
+            <Formik
+                initialValues={{
+                    title: '',
+                    content: '',
+                    category: '',
+                }}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ touched, errors, setFieldValue, values, isSubmitting }) => (
+                    <Form>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-white">Title</label>
+                            <Field
+                                type="text"
+                                name="title"
+                                className={`bg-white dark:bg-gray-600 text-gray-900 dark:text-white p-2 w-full rounded border ${touched.title && errors.title ? 'border-red-500' : 'border-gray-300 dark:border-gray-500'}`}
+                            />
+                            <ErrorMessage name="title" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
 
-                <Formik
-                    initialValues={{
-                        title: '',
-                        content: '',
-                        category: '',
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
-                >
-                    {({ touched, errors, setFieldValue, values }) => (
-                        <Form>
-                            {/* Title */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">Title</label>
-                                <Field
-                                    type="text"
-                                    name="title"
-                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.title && errors.title ? 'border-red-500' : 'border-[#778DA9]'}`}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-white">Category</label>
+                            <input
+                                type="text"
+                                name="category"
+                                value={values.category}
+                                onChange={(e) => setFieldValue('category', e.target.value)}
+                                className={`bg-white dark:bg-gray-600 text-gray-900 dark:text-white p-2 w-full rounded border ${touched.category && errors.category ? 'border-red-500' : 'border-gray-300 dark:border-gray-500'}`}
+                            />
+                            <ErrorMessage name="category" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-white">Content</label>
+                            <Field
+                                as="textarea"
+                                name="content"
+                                rows="4"
+                                className={`bg-white dark:bg-gray-600 text-gray-900 dark:text-white p-2 w-full rounded border ${touched.content && errors.content ? 'border-red-500' : 'border-gray-300 dark:border-gray-500'}`}
+                            />
+                            <ErrorMessage name="content" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-white">Upload Image</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                className="text-gray-900 dark:text-white file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-700 file:text-white hover:file:bg-blue-800"
+                                onChange={handleImageUpload}
+                            />
+                            {image && (
+                                <img
+                                    src={image}
+                                    alt="Preview"
+                                    className="mt-4 w-32 h-32 object-cover rounded border border-gray-300 dark:border-gray-600"
                                 />
-                                <ErrorMessage name="title" component="div" className="text-red-400 text-sm mt-1" />
-                            </div>
+                            )}
+                        </div>
 
-                            {/* Category */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">Category</label>
-                                <input
-                                    type="text"
-                                    name="category"
-                                    value={values.category}
-                                    onChange={(e) => setFieldValue('category', e.target.value)}
-                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.category && errors.category ? 'border-red-500' : 'border-[#778DA9]'}`}
-                                />
-                                <ErrorMessage name="category" component="div" className="text-red-400 text-sm mt-1" />
-                            </div>
-
-                            {/* Content */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">Content</label>
-                                <Field
-                                    as="textarea"
-                                    name="content"
-                                    rows="4"
-                                    className={`bg-[#415A77] text-[#E0E1DD] p-2 w-full rounded border ${touched.content && errors.content ? 'border-red-500' : 'border-[#778DA9]'}`}
-                                />
-                                <ErrorMessage name="content" component="div" className="text-red-400 text-sm mt-1" />
-                            </div>
-
-                            {/* Image Upload */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">Upload Image</label>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="text-[#E0E1DD] file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#778DA9] file:text-white hover:file:bg-[#415A77]"
-                                    onChange={handleImageUpload}
-                                />
-                                {image && (
-                                    <img
-                                        src={image}
-                                        alt="Preview"
-                                        className="mt-4 w-32 h-32 object-cover rounded border border-[#778DA9]"
-                                    />
-                                )}
-                            </div>
-
+                        <div className="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                             <button
                                 type="submit"
-                                className="w-full mt-4 bg-[#778DA9] hover:bg-[#415A77] text-white font-semibold py-2 rounded transition duration-300"
+                                disabled={isSubmitting}
+                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50"
                             >
-                                Submit
+                                {isSubmitting ? 'Submitting...' : 'Submit'}
                             </button>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
+                            <button
+                                type="button"
+                                data-modal-hide="article-modal"
+                                className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };
