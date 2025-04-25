@@ -9,7 +9,7 @@ const Navbar = () => {
                 {/* Logo avec icône */}
                 <div className="flex items-center space-x-2">
                     <FaBlog className="text-white text-3xl" /> {/* Logo avec icône */}
-                    <Link to="/" className="text-white text-2xl font-semibold">
+                    <Link to="/Accueil" className="text-white text-2xl font-semibold">
                         Wiame and Abdelkrim's World
                     </Link>
                 </div>
