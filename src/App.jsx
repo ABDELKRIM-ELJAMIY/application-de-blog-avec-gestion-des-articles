@@ -23,6 +23,7 @@ import AuthForm from './compenents/AuthForm'
 import Login from './compenents/Login'
 import Home from './pages/Home'
 import Footer from './compenents/Footer'
+import CommentSection from './compenents/CommentSection'
 
 function ArticleDetails() {
   const location = useLocation()
@@ -40,6 +41,7 @@ function ArticleDetails() {
           <Route path="/ArticleCard" element={<ArticleCard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<AuthForm />} />
+          <Route path='/comment' element={<CommentSection/>}/>
         </Routes>
       </main>
       <Footer />
