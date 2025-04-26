@@ -23,7 +23,7 @@ function App() {
       {showNavbar && <Navbar />}
       <main className="flex-1 p-4">
         <Routes>
-          <Route path="/Accueil" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/ArticleForm" element={<ArticleForm />} />
           <Route path="/ArticleCard" element={<ArticleCard />} />
           <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />

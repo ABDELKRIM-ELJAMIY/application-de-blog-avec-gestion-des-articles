@@ -4,17 +4,24 @@ import axios from 'axios';
 import CommentSection from './CommentSection';
 
 
-const ArticleDetails = ({isLoggedIn}) => {
+const ArticleDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
- 
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    category: '',
+    image: ''
+  });
+  
 
 
   const username = localStorage.getItem('username');
-  // const isLoggedIn = Boolean(username);
+  const isLoggedIn = Boolean(username);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -56,10 +63,39 @@ const ArticleDetails = ({isLoggedIn}) => {
     }
   };
 
-  const handleEdit = () => {
-    if (!article || !article.id) return;
-    navigate(`/edit/${article.id}`);
+
+
+  const handleEditClick = () => {
+    if (!article) return;
+    setIsEditing(true);
+    setFormData({
+      title: article.title || '',
+      content: article.content || '',
+      category: article.category || '',
+      image: article.image || ''
+    });
+    
   };
+
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedArticle = {
+        ...article, 
+        ...formData, 
+      };
+  
+      const response = await axios.put(`http://localhost:3000/articles/${article.id}`, updatedArticle);
+      setArticle(response.data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("Failed to update article");
+    }
+  };
+  
+  
 
   
   if (loading) {
@@ -102,42 +138,113 @@ const ArticleDetails = ({isLoggedIn}) => {
 
   
   return (
-    <div className="p-6">
-      <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mt-6 text-gray-900 dark:text-white">
-        <h2 className="text-2xl font-bold mb-2">{article.title}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">Category: {article.category}</p>
-        <p className="mb-4">{article.content}</p>
+    <div className="overflow-auto w-full bg-white p-6 dark:bg-gray-700 rounded-lg shadow-md mt-6 text-gray-900 dark:text-white">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+        
         {article.image && (
-          <img
-            src={article.image}
-            alt="Article"
-            className="w-64 h-64 object-cover rounded border mb-4"
-          />
+          <div className="flex-shrink-0">
+            <img
+              src={article.image}
+              alt="Article"
+              className="w-64 h-64 object-cover rounded border mb-4 md:mb-0"
+            />
+          </div>
         )}
 
-       {isLoggedIn && (
         
-      
-        <div className="flex gap-4">
-          <button
-            onClick={handleEdit}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-          >
-            Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded"
-          >
-            Delete
-          </button>
-        </div>
+        <div className="flex-1 text-center md:text-left">
+          <h2 className="text-3xl font-bold mb-2">{article.title}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">
+            Category: {article.category}
+          </p>
+          <p className="mb-4">{article.content}</p>
 
-       )}
-        <CommentSection articleId={article.id} isLoggedIn={isLoggedIn} username={username}/>
-      
+          
+          {isLoggedIn && (
+            <div className="flex justify-center md:justify-start gap-4 mb-4">
+              <button
+                onClick={handleEditClick}
+                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+              >
+                Edit
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded"
+              >
+                Delete
+              </button>
+            </div>
+          )}
+
+            {isEditing && (
+              <form onSubmit={handleEdit} className="mt-6 space-y-4">
+                <div>
+                  <label className="block mb-2 font-semibold">Title:</label>
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    className="w-full p-2 border rounded dark:bg-gray-600 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2 font-semibold">Content:</label>
+                  <textarea
+                    value={formData.content}
+                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    className="w-full p-2 border rounded dark:bg-gray-600 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2 font-semibold">Category:</label>
+                  <input
+                    type="text"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full p-2 border rounded dark:bg-gray-600 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2 font-semibold">Image URL:</label>
+                  <input
+                    type="text"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    className="w-full p-2 border rounded dark:bg-gray-600 dark:text-white"
+                  />
+                </div>
+
+                <div className="flex gap-4 mt-4">
+                  <button
+                    type="submit"
+                    className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(false)}
+                    className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+        </div>
+        
       </div>
+
+      <CommentSection articleId={article.id} isLoggedIn={isLoggedIn} username={username} />
     </div>
+
+    
+
   );
 };
 

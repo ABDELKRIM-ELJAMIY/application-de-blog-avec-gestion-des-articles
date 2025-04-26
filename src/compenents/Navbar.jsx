@@ -17,7 +17,7 @@ const Navbar = () => {
                 {/* Liens de navigation */}
                 <div className="flex space-x-6">
                     <Link
-                        to="/Accueil"
+                        to="/"
                         className="text-white hover:text-orange-500 transition duration-300"
                     >
                         Accueil
@@ -29,7 +29,7 @@ const Navbar = () => {
                         Connexion
                     </Link>
                     <Link
-                        to="/register"
+                        to="/signup"
                         className="text-white hover:text-orange-500 transition duration-300"
                     >
                         Inscription
