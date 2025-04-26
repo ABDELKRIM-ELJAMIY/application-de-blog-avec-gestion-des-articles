@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from 'react-router-dom';
+
 
 const ArticleCard = ({ article }) => {
     // Return null if article doesn't exist or doesn't have required properties
@@ -44,6 +46,10 @@ const ArticleCard = ({ article }) => {
                                     {article.createdRelative || "just now"} {article.readTime && `• ${article.readTime}`}
                                 </p>
                             </div>
+                            <Link to={`/articles/${article.id}`} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 text-sm">
+                                Details
+                            </Link>
+
                         </div>
                     )}
                 </div>

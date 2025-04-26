@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from "./images/BLOG.jpg";
 import '../App.css'
 
 function AuthForm() {
