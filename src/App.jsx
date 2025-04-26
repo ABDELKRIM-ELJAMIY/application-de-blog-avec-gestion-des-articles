@@ -13,7 +13,6 @@ import ArticleDetails from './compenents/ArticleDetails';
 function App() {
   const location = useLocation();
 
-  // Show the Navbar only on specific routes
   const showNavbar = !['/login', '/signup'].includes(location.pathname);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);

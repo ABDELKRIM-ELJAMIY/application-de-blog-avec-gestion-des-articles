@@ -9,6 +9,8 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const handleArticleAdded = (newArticle) => {
         if (newArticle && newArticle.title && newArticle.image) {
@@ -73,8 +75,16 @@ const Home = () => {
         setIsLoggedIn(!!user);
     }, []);
 
+    // Filtres d'articles
+    const filteredArticles = articles.filter((article) => {
+        const matchesTitle = article.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = selectedCategory ? article.category === selectedCategory : true;
+        return matchesTitle && matchesCategory;
+    });
+
     return (
         <div className="min-h-screen bg-[#E0E1DD]">
+
             {/* Hero Section */}
             <section className="bg-[#1B263B] text-[#E0E1DD] py-16">
                 <div className="container mx-auto px-4 max-w-6xl">
@@ -99,6 +109,29 @@ const Home = () => {
                 </div>
             </section>
 
+            {/* Filtres Section */}
+            <section className="py-8 bg-[#1B263B] text-[#E0E1DD]">
+                <div className="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row justify-between items-center gap-4">
+                    <input
+                        type="text"
+                        placeholder="Rechercher par titre ou mot-clé"
+                        className="w-full md:w-1/2 px-4 py-2 rounded-lg border border-[#415A77] bg-[#1B263B] text-[#E0E1DD] placeholder-[#778DA9] focus:outline-none focus:ring-2 focus:ring-[#778DA9]"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <select
+                        className="w-full md:w-1/3 px-4 py-2 rounded-lg border border-[#415A77] bg-[#1B263B] text-[#E0E1DD] focus:outline-none focus:ring-2 focus:ring-[#778DA9]"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                        <option value=""> Toutes les catégories</option>
+                        {Array.from(new Set(articles.map(article => article.category).filter(Boolean))).map((cat, index) => (
+                            <option key={index} value={cat}>{cat}</option>
+                        ))}
+                    </select>
+                </div>
+            </section>
+
             {/* Articles Section */}
             <section className="py-16">
                 <div className="container mx-auto px-4 max-w-6xl">
@@ -113,14 +146,14 @@ const Home = () => {
                         <div className="bg-red-100 text-red-600 p-4 rounded-lg text-center">
                             {error}
                         </div>
-                    ) : articles.length === 0 ? (
+                    ) : filteredArticles.length === 0 ? (
                         <div className="bg-[#778DA9] p-8 rounded-lg text-center">
                             <p className="text-[#E0E1DD] text-lg">Aucun article disponible.</p>
                             <p className="text-[#E0E1DD] opacity-80">Soyez le premier à en ajouter un!</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {articles.map((article, index) => {
+                            {filteredArticles.map((article, index) => {
                                 if (!article || !article.title || !article.image) return null;
                                 return (
                                     <ArticleCard
@@ -140,13 +173,13 @@ const Home = () => {
                     <div className="relative bg-[#E0E1DD] rounded-lg shadow-lg">
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-[#778DA9]">
                             <h3 className="text-xl font-semibold text-[#0D1B2A]">
-                                Create New Article
+                                Créer un nouvel article
                             </h3>
                             <button type="button" className="text-[#415A77] bg-transparent hover:bg-[#778DA9] hover:text-[#E0E1DD] rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="article-modal">
                                 <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
-                                <span className="sr-only">Close modal</span>
+                                <span className="sr-only">Fermer le modal</span>
                             </button>
                         </div>
 
