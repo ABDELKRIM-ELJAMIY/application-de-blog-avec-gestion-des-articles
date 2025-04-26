@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import ArticleForm from './compenents/ArticleForm';
 import ArticleCard from './compenents/ArticleCard';
@@ -15,6 +16,8 @@ function App() {
   // Show the Navbar only on specific routes
   const showNavbar = !['/login', '/signup'].includes(location.pathname);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <div>
       {showNavbar && <Navbar />}
@@ -23,11 +26,10 @@ function App() {
           <Route path="/Accueil" element={<Home />} />
           <Route path="/ArticleForm" element={<ArticleForm />} />
           <Route path="/ArticleCard" element={<ArticleCard />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
           <Route path="/signup" element={<AuthForm />} />
-          <Route path="/register" element={<AuthForm />} />
-          <Route path="/comment" element={<CommentSection />} />
-          <Route path="/articles/:id" element={<ArticleDetails />} />
+          <Route path="/comment" element={<CommentSection isLoggedIn={isLoggedIn} />} />
+          <Route path="/articles/:id" element={<ArticleDetails isLoggedIn={isLoggedIn}/>} />
 
         </Routes>
       </main>

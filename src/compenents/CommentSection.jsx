@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+
+
 const API_URL = "http://localhost:3000/comments";
 
 const CommentSection = ({ articleId }) => {
   const [comments, setComments] = useState([]);
   const [inputText, setInputText] = useState("");
+  const username = localStorage.getItem("username");
+  const isLoggedIn = Boolean(username);
+
 
   
   useEffect(() => {
@@ -33,7 +38,7 @@ const CommentSection = ({ articleId }) => {
     const newComment = {
       articleId,
       text: inputText,
-      author: "Anonymous",
+      author: username || "Anonymous",
       date: new Date().toLocaleString(),
     };
 
@@ -63,20 +68,25 @@ const CommentSection = ({ articleId }) => {
       <h2 className="text-xl text-white font-semibold mb-2">Comments</h2>
 
       {/* --------Form------------- */}
-      <form onSubmit={handleCommentSubmit} className="mb-4">
-        <textarea
-          className="w-full h-24 text-white p-2 border border-gray-400 rounded-md"
-          placeholder="Write your comment..."
-          value={inputText}
-          onChange={handleCommentChange}
-        />
-        <button
-          type="submit"
-          className="bg-[rgb(119,141,169)] text-white px-4 py-2 mt-2 rounded hover:bg-[rgb(65,90,119)]"
-        >
-          Add Comment
-        </button>
-      </form>
+        {isLoggedIn ? (
+          <form onSubmit={handleCommentSubmit} className="mb-4">
+            <textarea
+              className="w-full h-24 text-white p-2 border border-gray-400 rounded-md"
+              placeholder="Write your comment..."
+              value={inputText}
+              onChange={handleCommentChange}
+            />
+            <button
+              type="submit"
+              className="bg-[rgb(119,141,169)] text-white px-4 py-2 mt-2 rounded hover:bg-[rgb(65,90,119)]"
+            >
+              Add Comment
+            </button>
+          </form>
+        ) : (
+          <p className="text-white mb-4">Please log in to add a comment.</p>
+        )}
+
 
       {/* ------------Comment List--------------- */}
       <div className="mt-4">
@@ -91,12 +101,16 @@ const CommentSection = ({ articleId }) => {
               <div>
                 <p className="text-gray-500 text-xs">{comment.date}</p>
               </div>
-              <button
-                onClick={() => handleDelete(comment.id)}
-                className="text-sm px-2 py-1 rounded bg-red-500 text-white hover:bg-red-600"
-              >
-                Delete
-              </button>
+
+
+                  {isLoggedIn && (
+                    <button
+                      onClick={() => handleDelete(comment.id)}
+                      className="text-sm px-2 py-1 rounded bg-red-500 text-white hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  )}
             </div>
           </div>
         ))}

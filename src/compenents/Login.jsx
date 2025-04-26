@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import Image from './images/BLOG.jpg';
 import '../App.css'
+import { useNavigate } from 'react-router-dom';
 
-function Login () {
+
+function Login({ setIsLoggedIn }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -56,10 +59,19 @@ function Login () {
 
       if (savedData && savedData.email === formData.email && savedData.password === formData.password) {
         setSuccessMessage('Connexion réussie !');
+
+        localStorage.setItem("username", savedData.username);
+
+        setIsLoggedIn(true);
+
+        navigate('/Accueil'); 
+
       } else {
         setErrors({ email: '', password: 'Email ou mot de passe incorrect' });
       }
     }
+    
+
   };
 
   return (
