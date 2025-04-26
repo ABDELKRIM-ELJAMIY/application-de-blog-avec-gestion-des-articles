@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from "./images/BLOG.jpg";
 import '../App.css'
 
 function AuthForm() {
@@ -25,7 +24,7 @@ function AuthForm() {
 
   const phoneRegex = /^\+?[0-9]{10,15}$/;
 
-  // Form validation function
+ 
   const validateForm = () => {
     let isValid = true;
     const newErrors = { username: '', email: '', password: '', confirmPassword: '', number: '', general: '' };
@@ -74,7 +73,7 @@ function AuthForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Clear previous success and error messages
+    
     setSuccessMessage('');
     setErrors({ ...errors, general: '' });
 
@@ -87,7 +86,7 @@ function AuthForm() {
 
         // Simulating a successful API call
         setTimeout(() => {
-          window.location.href = '/';  // Redirect to login page
+          window.location.href = '/login';  
         }, 2000);
       } catch (error) {
         setErrors({ ...errors, general: 'Une erreur est survenue' });

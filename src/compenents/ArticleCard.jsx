@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const ArticleCard = ({ article }) => {
     if (!article || !article.title || !article.image) {
@@ -11,9 +11,11 @@ const ArticleCard = ({ article }) => {
     const handleClick = () => {
         navigate(`/details/${article.id}`);
     };
+
     const authorInitial = article.author ? article.author.charAt(0) : "";
+
     return (
-        <div onClick={handleClick}  className="bg-[#E0E1DD] rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
+        <div onClick={handleClick} className="bg-[#E0E1DD] rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
             <div className="relative">
                 <img
                     src={article.image}
@@ -49,6 +51,10 @@ const ArticleCard = ({ article }) => {
                             </div>
                         </div>
                     )}
+                    {/* Le bouton 'Details' ici */}
+                    <Link to={`/articles/${article.id}`} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 text-sm">
+                        Details
+                    </Link>
                 </div>
             </div>
         </div>
