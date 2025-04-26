@@ -1,16 +1,19 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 const ArticleCard = ({ article }) => {
-    // Return null if article doesn't exist or doesn't have required properties
     if (!article || !article.title || !article.image) {
         return null;
     }
 
-    // Safe access to properties
-    const authorInitial = article.author ? article.author.charAt(0) : "";
+    const navigate = useNavigate();
 
+    const handleClick = () => {
+        navigate(`/details/${article.id}`);
+    };
+    const authorInitial = article.author ? article.author.charAt(0) : "";
     return (
-        <div className="bg-[#E0E1DD] rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
+        <div onClick={handleClick}  className="bg-[#E0E1DD] rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
             <div className="relative">
                 <img
                     src={article.image}

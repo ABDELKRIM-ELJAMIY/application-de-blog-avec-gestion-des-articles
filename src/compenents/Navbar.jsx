@@ -1,20 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaBlog } from "react-icons/fa"; // Importing a blog icon from react-icons
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaBlog } from "react-icons/fa";
 
 const Navbar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userData = localStorage.getItem("userData");
+        if (userData) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("userData");
+        setIsLoggedIn(false);
+        navigate("/login");
+    };
+
     return (
         <nav className="bg-gray-900 p-4 shadow-lg">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
-                {/* Logo avec icône */}
                 <div className="flex items-center space-x-2">
-                    <FaBlog className="text-white text-3xl" /> {/* Logo avec icône */}
+                    <FaBlog className="text-white text-3xl" />
                     <Link to="/Accueil" className="text-white text-2xl font-semibold">
                         Wiame and Abdelkrim's World
                     </Link>
                 </div>
 
-                {/* Liens de navigation */}
                 <div className="flex space-x-6">
                     <Link
                         to="/Accueil"
@@ -22,18 +38,30 @@ const Navbar = () => {
                     >
                         Accueil
                     </Link>
-                    <Link
-                        to="/login"
-                        className="text-white hover:text-orange-500 transition duration-300"
-                    >
-                        Connexion
-                    </Link>
-                    <Link
-                        to="/register"
-                        className="text-white hover:text-orange-500 transition duration-300"
-                    >
-                        Inscription
-                    </Link>
+
+                    {!isLoggedIn ? (
+                        <>
+                            <Link
+                                to="/login"
+                                className="text-white hover:text-orange-500 transition duration-300"
+                            >
+                                Connexion
+                            </Link>
+                            <Link
+                                to="/register"
+                                className="text-white hover:text-orange-500 transition duration-300"
+                            >
+                                Inscription
+                            </Link>
+                        </>
+                    ) : (
+                        <button
+                            onClick={handleLogout}
+                            className="text-white hover:text-red-500 transition duration-300"
+                        >
+                            Déconnexion
+                        </button>
+                    )}
                 </div>
             </div>
         </nav>
