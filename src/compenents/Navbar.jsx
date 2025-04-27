@@ -13,8 +13,12 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userData");
+    localStorage.removeItem("username");
     setIsLoggedIn(false);
-    navigate("/login");
+
+    window.location.reload();
+
+    navigate("/");
   };
 
   return (
@@ -44,7 +48,7 @@ const Navbar = () => {
                 Connexion
               </Link>
               <Link
-                to="/register"
+                to="/signup"
                 className="text-white hover:text-orange-500 transition-colors duration-300"
               >
                 Inscription

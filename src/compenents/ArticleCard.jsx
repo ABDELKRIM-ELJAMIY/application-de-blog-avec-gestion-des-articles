@@ -9,7 +9,7 @@ const ArticleCard = ({ article }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/details/${article.id}`);
+        navigate(`/articles/${article.id}`);
     };
 
     const authorInitial = article.author ? article.author.charAt(0) : "";
