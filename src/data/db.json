@@ -1,7 +1,4 @@
 {
-<<<<<<< HEAD
-  "articles":[]
-=======
   "articles": [
     {
       "title": "Habits for Your Mental Health",
@@ -78,5 +75,4 @@
       "date": "27/04/2025 10:47:13"
     }
   ]
->>>>>>> 5716a2ebd531d02666ce3c941ca481d295535cb1
 }
