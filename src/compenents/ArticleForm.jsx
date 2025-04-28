@@ -3,7 +3,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-// Function to display relative time (e.g., "created 6 minutes ago")
 const getTimeAgo = (date) => {
     const now = new Date();
     const seconds = Math.floor((now - date) / 1000);
@@ -49,7 +48,7 @@ const ArticleForm = ({ onArticleAdded }) => {
         try {
             const storedUser = localStorage.getItem("userData");
             const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-            const author = parsedUser?.username || "Anonymous";  // Retrieve username from localStorage
+            const author = parsedUser?.username || "Anonymous"; 
 
             const now = new Date();
             const createdAt = now.toISOString();
