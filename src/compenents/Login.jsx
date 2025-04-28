@@ -64,7 +64,7 @@ function Login({ setIsLoggedIn }) {
 
         setIsLoggedIn(true);
 
-        navigate('/Accueil'); 
+        navigate('/'); 
 
       } else {
         setErrors({ email: '', password: 'Email ou mot de passe incorrect' });
